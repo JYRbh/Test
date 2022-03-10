@@ -1,6 +1,8 @@
-from  selenium import webdriver
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from time import sleep
 import pickle
+import os
 #主页
 damai_url = 'https://www.damai.cn/'
 
@@ -15,16 +17,20 @@ class Concert:
     def __init__(self):
         self.status = 0 #状态码，表示当前执行到了哪个步骤
         self.login_method = 1 #{0:模拟登录，1：免登录}
-        self.driver = webdriver.Chrome(executable_path='chromedriver.exe')
+        s = Service("chromedriver.exe")
+        self.driver = webdriver.Chrome(service=s)
 
     def set_cookies(self):
         """登录网址的时候要用的方法"""
         self.driver.get(damai_url)
         print("###请点击登陆###")
         #如果说我一直没有点击登陆？
-        while self.driver.find('大麦网-全球演出赛事官方购票平台')!= -1:
+        while self.driver.title.find('大麦网-全球演出赛事官方购票平台')!= -1:
+            sleep(1)
+        while self.driver.title != '大麦网-全球演出赛事官方购票平台-100%正品、先付先抢、在线选座！':
             sleep(1)
         print("###扫描成功###")
+        #get_cookies:driver里面的方法
         pickle.dump(self.driver.get_cookies(),open('cookies.pkl','wb'))    # 保存cookie
         print('###cookie保存成功###')
         self.driver.get(target_url)
@@ -42,7 +48,29 @@ class Concert:
         print('###载入cooki###')
 
     def login(self):
-        """登陆"""
-        if self.login_method == 0
+        """登录"""
+        if self.login_method == 0:
+            self.driver.get(login_url)
+            print('###开始登录###')
+        elif self.login_method == 1:
+            #创建文件夹，文件是否存在
+            if not os.path.exists('cookies.pkl'):
+                self.set_cookies()        #没有文件的情况下，登录一下
+            else:
+                self.driver.get(target_url)   #跳转到抢票页
+                self.get_cookie()             #并且登录
+
+        def enter_concert(self):
+            """打开浏览器"""
+            print('###打开浏览器，进入大麦网###')
+            #调用登录
+            self.login()            #先登录再说
+            self.driver.refresh()   #刷新页面
+            self.status = 2         #登录成功标识
+            print('###登录成功###')
+
+if __name__ == '__main__':
+    con = Concert()
+    con.login()
 
 
