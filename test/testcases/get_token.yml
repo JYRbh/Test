@@ -1,0 +1,21 @@
+-
+  name: 获得统一的鉴权码token
+  request:
+    method: get
+    url: https://api.weixin.qq.com/cgi-bin/token
+    data:
+      grant_type: client_credential
+      appid: wx1489b6dad9031342
+      secret: 7d192f3134b73c06b126e4b02e956576
+    validate: None
+
+-
+  name: grant_type为空
+  request:
+    method: get
+    url: https://api.weixin.qq.com/cgi-bin/token
+    data:
+      grant_type:
+      appid: wx1489b6dad9031342
+      secret: 7d192f3134b73c06b126e4b02e956576
+    validate: None

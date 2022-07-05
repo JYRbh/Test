@@ -1,8 +1,12 @@
+import time
+
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from time import sleep
 import pickle
 import os
+from selenium.webdriver.common.by import By
+
 #主页
 damai_url = 'https://www.damai.cn/'
 
@@ -45,8 +49,6 @@ class Concert:
                 #'secure':False,
 
                 'value':cookie.get('value')
-
-
             }
             self.driver.add_cookie(cookie_dict)
         print('###载入cooki###')
@@ -72,9 +74,94 @@ class Concert:
         self.driver.refresh()   #刷新页面
         self.status = 2         #登录成功标识
         print('###登录成功###')
+        if self.isElementExisr(''):
+            self.driver.find_element(By.XPATH,'').click()
+
+     #二、抢票并且下单
+    def choose_ticket(self):
+        """"选票操作"""
+        if self.status == 2:
+            print('=' * 30)
+            print('###开始进行日期及票价选择###')
+            while self.driver.title.find("确认订单") == -1:
+                # buybutton
+                try:
+                    buybutton = self.driver.find_element(By.CLASS_NAME,'buybtn').text
+                    if buybutton == '提交缺货登记':
+                        self.status = 2 # m没有进行更改操作
+                        self.driver.get(target_url) #刷新页面 继续执行操作
+                    elif buybutton == '立即预定':
+                        #点击立即预定
+                        self.driver.find_element(By.CLASS_NAME,'buybtn').click()
+                        self.status = 3
+                    elif buybutton == '立即购买':
+                        self.driver.find_element(By.CLASS_NAME, 'buybtn').click()
+                        self.status = 4
+                    elif buybutton == '选座购买':
+                        self.driver.find_element(By.CLASS_NAME, 'buybtn').click()
+                        self.status = 5
+                except:
+                    print('###没有跳转到订单结算界面###')
+                title = self.driver.title
+                if title == '选座购买':
+                    # 选座购买的逻辑
+                    break
+                elif title == '确认订单':
+                    #实现下单的逻辑
+                    while True:
+                        #如果标题为确认订单
+                        print('')
+                        #如果当前购票人信息存在 就点击
+                        if self.isElementExisr(''):
+                            #下单操作
+                            self.check_order()
+                            break
+
+    def choice_seats(self):
+        """选择座位"""
+        while self.driver.title == '选座购买':
+            while self.isElementExisr(''):
+                print('')
+            while self.isElementExisr():
+                self.driver.find_element(By.XPATH,'').click()
+
+    def check_order(self):
+        """下单操作"""
+        if self.status in [3,4,5]:
+            print('###开始确认订单###')
+            try:
+                #默认选择第一个购票人信息
+                self.driver.find_element(By.XPATH,'').click()
+            except Exception as e:
+                print('###购票人信息选中失败，自行查看元素位置###')
+                print(e)
+            #最后一步提交订单
+            time.sleep(0.5) #太快了不好，影响加载 导致按钮点击无效
+            self.driver.find_element(By.XPATH,'').click( )
+
+
+    def isElementExisr(self):
+        """"判断元素是否存在"""
+        flag = True
+        browser = self.driver
+        try:
+            browser.find_element(By.XPATH,'element')
+            return  flag
+        except:
+            flag = False
+            return flag
+
+    def finish(self):
+        """抢票完成，退出"""
+        self.driver.quit()
 
 if __name__ == '__main__':
-    con = Concert()
-    con.login()
+    try:
+        con = Concert()
+        con.enter_concert()
+        con.choose_ticket()
+    except Exception as e:
+        print(e)
+        con.finish()
 
 

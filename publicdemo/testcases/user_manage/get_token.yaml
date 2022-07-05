@@ -1,0 +1,10 @@
+-
+  name: 获取统一接口鉴权码
+  request:
+    method: get
+    url: https://api.weixin.qq.com/cgi-bin/token
+    data:
+      grant_type: clitent_credential
+      appid: v
+      secret: a
+  validate: None
