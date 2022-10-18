@@ -1,0 +1,8 @@
+"Status","Start Time","Stop Time","Duration in ms","Parent Suite","Suite","Sub Suite","Test Class","Test Method","Name","Description"
+"passed","Mon Jul 04 18:21:40 CST 2022","Mon Jul 04 18:21:40 CST 2022","0","testcases.product_manage","test_meshang","TestMashang","","","test_yiran",""
+"passed","Mon Jul 04 18:21:40 CST 2022","Mon Jul 04 18:21:40 CST 2022","1","testcases.user_manage","test_api","TestApi","","","test_01_get_token[age-18]",""
+"passed","Mon Jul 04 18:21:40 CST 2022","Mon Jul 04 18:21:40 CST 2022","0","testcases","test_haohai","TestHaohai","","","test_haohan",""
+"passed","Mon Jul 04 18:21:40 CST 2022","Mon Jul 04 18:21:40 CST 2022","0","testcases.product_manage","test_meshang","TestMashang","","","test_xingyao",""
+"passed","Mon Jul 04 18:21:40 CST 2022","Mon Jul 04 18:21:40 CST 2022","0","testcases.user_manage","test_api","TestApi","","","test_01_get_token[name-百里]",""
+"passed","Mon Jul 04 18:21:40 CST 2022","Mon Jul 04 18:21:40 CST 2022","0","testcases.product_manage","test_meshang","TestMashang","","","test_baili",""
+"passed","Mon Jul 04 18:21:40 CST 2022","Mon Jul 04 18:21:40 CST 2022","0","testcases.product_manage","test_meshang","TestJiaoyu","","","test_01_mashang",""
